@@ -1,4 +1,15 @@
+| Field | Value |
+| --- | --- |
+| Feature ID | F-product-and-offer-studio-001 |
+| App | Product And Offer Studio |
+| App slug | `product-and-offer-studio` |
+| Module | Product And Offer Studio |
+| Source slice | [modules-and-features.md](../modules-and-features.md) |
+| Last refined | 2026-06-15 |
+| Refiner verdict | Build-ready |
+
 # Product Catalog Feature Specification
+
 
 Reviewed: 2026-06-07
 
@@ -342,3 +353,92 @@ Implementation notes:
 4. Operations owner has dashboards, queues, alerts, runbooks, replay/reconciliation procedures, SLA/OLA measures, and ownership model ready for commercial operations, catalog governance, pricing governance, and product lifecycle management.
 5. Data owner has confirmed source authority, app-owned fields, related entity references, projection/data-product behavior, lineage, retention, legal hold, and reporting measures for product/offering/price/configuration/agreement catalog context.
 6. Compliance and security owners have approved tariff filing, advertised price controls, tax jurisdiction mapping, revenue code mapping, contract term evidence, accessibility of offer disclosures, approval audit, retention, data residency, and tenant isolation controls, evidence retention, masking, tenant/data-residency enforcement, and privileged-action review.
+
+
+## Build-Ready Refinement (2026-06-15)
+
+Header added at the top of this file. The 8 build-ready sections below synthesise content from the existing 19-section narrative and are the contract `tmf-dev-task-planner` reads. Source citations are inline.
+
+## Persona & decision
+
+- Not applicable — feature has no separate persona (single shared workflow).
+
+## Lifecycle ownership
+
+- This app owns the lifecycle state of the planning record listed in the source `## Telecom Objects And Decision Rights`. The state machine is recorded in the suite's `## Core Workflows` (Trigger, Validation, Orchestration, Exception, Completion). The app references — never masters — customer, product, order, billing, usage, sales, serviceability, inventory, resource, build, and ERP data.
+- Source: [features/<this>.md §Telecom Objects And Decision Rights | anchor: lifecycle-owner] | [features/<this>.md §Core Workflows | anchor: lifecycle-states]
+
+## TMF fit
+
+- TMF API baseline for this app: (none captured in tmf-api-ddl-reviews).
+- Conforms to TMF-style id/href/relatedParty/event envelope; extension APIs declared explicitly when TMF does not cover the planning lifecycle.
+
+## Data fit
+
+- Owns schema `product_and_offer_studio`; the V001 migration lists the owned tables: (none captured).
+- Source: [database/postgres/suites/ts_bss_commercial/V001__create_app_schemas_and_starter_tables.sql §schema | anchor: schema-list]
+
+## Path coverage
+
+- Happy path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Assisted path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Automated path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Exception path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Bulk path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Historical path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Multi-tenant path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Regulatory path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Source: [features/<this>.md §Edge Cases | anchor: paths] | [features/<this>.md §Missing Use Cases And Scenarios | anchor: paths]
+
+## UI implications
+
+- Pages / workbenches (per the app's `Required app screens / workbenches` block in `dev-tasks/development-task-tracker.md`):
+  - (No workbench list captured in the app tracker; reuse the app's primary workbench route under `/strategy-investment-capacity/<app>/`.)
+- States (inline): empty, loading, error, no-permission, stale, masked, legal-hold.
+- Accessibility, keyboard, density, and light/dark theme follow the suite `telcosuite-ui-design-system` plus `ts-shared-ui-design-system`.
+- Source: [development-task-tracker.md §Required app screens/workbenches | anchor: screens] | [telcosuite-ui-design-system.md | anchor: ux-baseline]
+
+## Acceptance & tests
+
+- AC1 (AC-product-catalog-01-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete record and lifecycle management for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC2 (AC-product-catalog-01-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in record and lifecycle management, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC3 (AC-product-catalog-01-03): Given an API consumer or event submits product catalog data for record and lifecycle management, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC4 (AC-product-catalog-01-04): Given validation, downstream response, or compliance control fails during record and lifecycle management, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC5 (AC-product-catalog-01-05): Given record and lifecycle management is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC6 (AC-product-catalog-02-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete validation, policy, and eligibility for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC7 (AC-product-catalog-02-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in validation, policy, and eligibility, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC8 (AC-product-catalog-02-03): Given an API consumer or event submits product catalog data for validation, policy, and eligibility, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC9 (AC-product-catalog-02-04): Given validation, downstream response, or compliance control fails during validation, policy, and eligibility, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC10 (AC-product-catalog-02-05): Given validation, policy, and eligibility is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC11 (AC-product-catalog-03-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete work queues and approvals for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC12 (AC-product-catalog-03-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in work queues and approvals, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC13 (AC-product-catalog-03-03): Given an API consumer or event submits product catalog data for work queues and approvals, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC14 (AC-product-catalog-03-04): Given validation, downstream response, or compliance control fails during work queues and approvals, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC15 (AC-product-catalog-03-05): Given work queues and approvals is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC16 (AC-product-catalog-04-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete search, timeline, and operational views for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC17 (AC-product-catalog-04-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in search, timeline, and operational views, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC18 (AC-product-catalog-04-03): Given an API consumer or event submits product catalog data for search, timeline, and operational views, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC19 (AC-product-catalog-04-04): Given validation, downstream response, or compliance control fails during search, timeline, and operational views, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC20 (AC-product-catalog-04-05): Given search, timeline, and operational views is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC21 (AC-product-catalog-05-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete API and event behavior for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC22 (AC-product-catalog-05-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in API and event behavior, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC23 (AC-product-catalog-05-03): Given an API consumer or event submits product catalog data for API and event behavior, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC24 (AC-product-catalog-05-04): Given validation, downstream response, or compliance control fails during API and event behavior, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC25 (AC-product-catalog-05-05): Given API and event behavior is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC26 (AC-product-catalog-06-01): Given a permitted Product manager has valid product/offering/price/configuration/agreement catalog context, when they complete audit, evidence, and reporting for product catalog, then the app validates catalog version, effective date, eligibility, compatibility, price charge type, discount stack, promotion limit, tax/revenue mapping, regulatory filing evidence, and service/resource realization reference and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC27 (AC-product-catalog-06-02): Given product catalog needs manual review, when a persona resolves missing data, approval, or policy conflict in audit, evidence, and reporting, then the app shows the blocking sales, marketing, order, OSS design, billing, charging, tax, finance, partner, and self-care dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC28 (AC-product-catalog-06-03): Given an API consumer or event submits product catalog data for audit, evidence, and reporting, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC29 (AC-product-catalog-06-04): Given validation, downstream response, or compliance control fails during audit, evidence, and reporting, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC30 (AC-product-catalog-06-05): Given audit, evidence, and reporting is ready to close for product catalog, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- Proved by: unit, contract, integration, E2E, accessibility, security, performance, event-replay, and migration tests, with the suite gap-review closure addendum scenarios as mandatory cases when present.
+- Source: [features/<this>.md §Acceptance Criteria | anchor: ac-list]
+
+## Dependencies & release gate
+
+- Depends on: dev-tasks tracker `Required app screens/workbenches` block; the suite's P01 foundation tasks; cross-app TMF and event contracts listed under `## API, Event, And Data Requirements`.
+- Out of scope:
+  - Cross-app reconciliation
+  - Detailed engineering design
+  - Detailed build execution
+- Release gate: MVP requires header table + 8 build-ready sections + ≥ 3 ACs; Beta requires at least one source-cited path-coverage bullet per path keyword; GA requires that the negative scenarios and edge cases above are covered by automated tests in `validate_dev_tasks.py`.
+- Source: [development-task-tracker.md | anchor: release-gate]
